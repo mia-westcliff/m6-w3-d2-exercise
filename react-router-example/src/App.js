@@ -1,15 +1,27 @@
 import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Outlet } from 'react-router-dom';
+
+const BlogPosts = {
+  '1': {
+    title: 'First Blog Post',
+description: 'Lorem ipsum dolor sit amet, consectetur adip.' },
+'2': {
+title: 'Second Blog Post', description: 'Hello React Router v6'
+} };
 
 function App() {
   return (
     <Router>
       <Routes>
-      <Route path="/" element={<Home />} /> 
-      <Route path="/about" element={<About />} />
+        <Route path="/" element={<Home />} /> 
+        <Route path="/about" element={<About />} /> 
+        <Route path="/posts" element={<Posts />}>
+<Route path="/posts" element={<PostLists />} /> 
+<Route path=":slug" element={<Post />} />
+</Route>
       </Routes>
-    </Router> 
+      </Router>
   );
 }
 
@@ -27,5 +39,25 @@ function About() {
 <p>Lorem ipsum dolor sit amet, consectetur adip.</p>
 </div> );
 }
+
+function Post() {
+  const { slug } = useParams();
+  const post = BlogPosts[slug];
+  const { title, description } = post; return (
+  <div style={{ padding: 20 }}> <h3>{title}</h3> <p>{description}</p>
+  </div> );
+  }
+function PostLists() {
+  return (
+    <ul>
+     {Object.entries(BlogPosts).map(([slug, { title
+}]) => (
+  <li key={slug}>
+    <Link to="/posts" style={{ padding: 5 }}> 
+    Posts
+    </Link>
+</li>
+))} </ul>
+); }
 
 export default App;
